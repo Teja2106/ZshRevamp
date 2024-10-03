@@ -1,41 +1,29 @@
 #!/bin/zsh
 
 # Installing curl if not installed
-if which curl >/dev/null 2>&1; then
-	echo "*curl IS ALREADY INSTALLED*"
-	echo "PATH: $(which curl)\n"
-else
+if ! command -v curl >/dev/null 2>&1; then
 	sudo apt install curl -y
 fi
 
 #Installing neovim if not installed
-if which nvim >/dev/null 2>&1; then
-	echo "*neovim IS ALREADY INSTALLED*"
-	echo "PATH: $(which nvim)\n"
-else
+if ! command -v nvim >/dev/null 2>&1; then
 	sudo apt install neovim -y
 fi
 
 #Installing zsh if not installed
 if which zsh >/dev/null 2>&1; then
-	echo "*zsh IS ALREADY INSTALLED*"
-	echo "PATH: $(which zsh)\n"
-else
 	sudo apt install zsh -y
 fi
 
 # Installing git if not installed
 if which git >/dev/null 2>&1; then
-	echo "*git IS ALREADY INSTALLED*"
-	echo "PATH: $(which git)\n"
-else
 	sudo apt install git -y
 fi
 
 # Checking if oh-my-zsh is installed or not
 if [ -d "$HOME/.oh-my-zsh" ]; then
 	echo "~/.oh-my-zsh directory exists."
-	echo "\e[1;3;4mHelp yourself finding the 'oh-my-zsh' directory\e[0m\n$(ls -lah ~/)"
+	echo "Run --help or -h for more."
 else
 	sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 fi
@@ -52,13 +40,34 @@ change_theme() {
 	exit 0
 }
 
-if [ "$1" = "--change-theme" ] && [ -n "$2" ]; then
-	echo "Enter the new zsh theme name\n"
-	echo "If you don't know the theme name read the README file of the git repo: "
-	THEME_NAME="$2"
-	change_theme "$THEME_NAME"
-	exit 0
-fi
+while getopts ":c:h" opt; do
+	case $opt in
+		c) #Change Theme
+			THEME_NAME=$"OPTARG"
+			change_theme="$THEME_NAME"
+			exit 0
+			;;
+
+		h) #Help option
+			echo "Usage: ./install.sh [-c (change_theme) <theme_name>] [-h (help)]"
+			echo "	-c: Change zsh theme to the specified theme."
+			echo "	-h: Show the help message."
+			exit 0
+			;;
+
+		/?)
+			echo "Invalid option: -$OPTARG" >&2;
+			exit 1
+			;;
+
+		:)
+			echo "Invalid -$OPTARG requires an argument." >&2
+			exit 1
+			;;
+
+	esac
+done
+
 
 read -p "Enter the GitHub link for zsh theme: " GIT_LINK
 
@@ -103,5 +112,3 @@ sed -i "11s/^ZSH_THEME=\".*\"/ZSH_THEME=\"$NEW_THEME\"/" "$ZSHRC_FILE"
 . "$ZSHRC_FILE"
 echo "Updated the theme."
 echo "*If the terminal doesn't look updated close and restart the shell.*"
-
-update_theme "$NEW_THEME"
