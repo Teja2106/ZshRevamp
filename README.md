@@ -85,4 +85,4 @@ This is to check if you have all the necessary dependencies installed.
 ```bash
 echo $0
 ```
-If the output is `/usr/bin/bash` run `zsh` in the terminal.
+If the output is `/usr/bin/bash` or `bash` run `zsh` in the terminal.
