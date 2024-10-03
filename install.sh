@@ -42,7 +42,7 @@ while getopts "hidc:g:" flag; do
 				echo "Run -h for more."
 			else
 				sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-				echo "\e[1m;3m;4m;Restart your shell.\e[0m"
+				echo "\e[1;3;4mRestart your shell.\e[0m"
 			fi
 			;;
 
