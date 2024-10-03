@@ -1,4 +1,4 @@
-#! /bin/zsh
+#! /bin/bash
 
 install_deps() {
 	local cmd=$1

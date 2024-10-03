@@ -5,7 +5,7 @@
 **ZshRevamp** is a script that simplifies the process of managing Zsh themes in a Linux environment. It automates theme installation, updates, and configuration by downloading themes from GitHub and applying them directly to your terminal setup. With **ZshRevamp**, you can easily customize your Zsh experience and switch between themes with minimal effort.
 
 ## Features
-- **Automates Dependency Installation**: Automatically installs necessary dependencies such as `curl`, `git`, and `zsh`.
+- **Automates Dependency Installation**: Automatically installs necessary dependencies such as `curl` and `zsh`.
 - **Automated Theme Installation**: Clone Zsh theme directly from GitHub with a simple command.
 - **Dynamic Theme Management**: Switch between installed themes by modifying your `.zshrc` file.
 - **Easy Updates**: Check for existing themes and pull the latest updates seamlessly.
@@ -16,11 +16,10 @@
 Before running **ZshRevamp**, ensure you have the following:
 - **sudo** access: The script uses `sudo` for installing dependencies.
 - **Zsh**: The Z shell, a powerful command-line shell.
-- **Git**: Version control system used to clone repositories.
 
 ## Installation
 1. **Clone the Repository**:
-```bash
+```bash 
 git clone https://github.com/Teja2106/ZshRevamp.git
 cd ZshRevamp
 ```
@@ -49,7 +48,7 @@ sudo ./install.sh [OPTIONS]
 ```bash
 ./install.sh -d
 ```
-This command installs the necessary dependencies like `curl`, `git`, and `zsh`.
+This command installs the necessary dependencies like `curl` and `zsh`.
 
 2. **Change Theme**:
 ```bash
