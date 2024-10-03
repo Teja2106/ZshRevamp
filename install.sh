@@ -1,32 +1,22 @@
-#!/bin/zsh
+#! /usr/bin/env
 
-# Installing curl if not installed
-if ! command -v curl >/dev/null 2>&1; then
-	sudo apt install curl -y
-fi
+install_deps() {
+	local cmd=$1
+	local pkg=$2
+	if ! command -v $cmd >/dev/null 2>&1; then
+		echo "Installing $pkg..."
+		sudo apt install $pkg -y
+	fi
 
-#Installing neovim if not installed
-if ! command -v nvim >/dev/null 2>&1; then
-	sudo apt install neovim -y
-fi
-
-#Installing zsh if not installed
-if which zsh >/dev/null 2>&1; then
-	sudo apt install zsh -y
-fi
-
-# Installing git if not installed
-if which git >/dev/null 2>&1; then
-	sudo apt install git -y
-fi
-
-# Checking if oh-my-zsh is installed or not
-if [ -d "$HOME/.oh-my-zsh" ]; then
-	echo "~/.oh-my-zsh directory exists."
-	echo "Run --help or -h for more."
-else
-	sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-fi
+	# Install oh-my-zsh if not installed.
+	if [ -d "$HOME/.oh-my-zsh" ]; then
+		echo "~/.oh-my-zsh directory exists."
+		echo "Run --help or -h for more."
+	else
+		sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+		echo "\e[1m;3m;4m;Restart your shell.\e[0m"
+	fi
+}
 
 # Downloading the oh-my-zsh theme (you can use your favorite theme)
 change_theme() {
@@ -40,7 +30,7 @@ change_theme() {
 	exit 0
 }
 
-while getopts ":c:h" opt; do
+while getopts ":c:h:i" opt; do
 	case $opt in
 		c) #Change Theme
 			THEME_NAME=$"OPTARG"
@@ -54,6 +44,12 @@ while getopts ":c:h" opt; do
 			echo "	-h: Show the help message."
 			exit 0
 			;;
+
+		i) #Install packages
+			install_deps "curl" "curl"
+			install_deps "nvim" "neovim"
+			install_deps "zsh" "zsh"
+			install_deps "git" "git"
 
 		/?)
 			echo "Invalid option: -$OPTARG" >&2;
