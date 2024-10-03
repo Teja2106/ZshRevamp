@@ -24,7 +24,6 @@ while getopts "hidc:g:" flag; do
 			;;
 		d)
 			install_deps "curl" "curl"
-			install_deps "git" "git"
 			install_deps "zsh" "zsh"
 			;;
 		c)
