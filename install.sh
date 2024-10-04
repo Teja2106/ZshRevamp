@@ -30,7 +30,6 @@ while getopts "hidc:g:" flag; do
 			ZSHRC_FILE="$HOME/.zshrc"
 
 			sed -i "11s/^ZSH_THEME=\".*\"/ZSH_THEME=\"$OPTARG\"/" "$ZSHRC_FILE"
-			source "$ZSHRC_FILE"
 			echo "Updated the theme."
 			echo "\e[1;3;4mIf the terminal doesn't look updated close and restart the shell.\e[0m"
 			;;
