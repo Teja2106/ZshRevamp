@@ -48,33 +48,23 @@ while getopts "hidc:g:" flag; do
 		g)
 			BASE_DIR="$HOME/.zsh-themes"
 			mkdir -p "$BASE_DIR"
-			THEME_NAME=$(basename -s .git "$OPTARG")
+			GIT_DIR=$(basename -s .git "$OPTARG")
 
-			TARGET_DIR="$BASE_DIR/$THEME_NAME"
-			if [ -d "$TARGET_DIR" ]; then
-				echo "\e[3mTheme '$THEME_NAME' already exists in $BASE_DIR\e[0m"
-				read -p "Would you like to pull the latest changes instead? (y/n): " choice
-				if [[ "$choice" == 'y' ]]; then
-					git -C "$TARGET_DIR" pull
-				else
-					echo "Skipping cloning/pull operation."
-				fi
-			else
-				git clone "$OPTARG" "$TARGET_DIR"
-				echo "Cloned '$THEME_NAME' into $TARGET_DIR"
-			fi
+			TARGET_DIR="$BASE_DIR/$GIT_DIR"
+			git clone "$OPTARG" "$TARGET_DIR"
+			echo "Cloned '$GIT_DIR' into $TARGET_DIR"
 
-			if [ -f "$TARGET_DIR/$THEME_NAME" ]; then
-				if [ ! -f "$ZSH/themes/$THEME_NAME" ]; then
-					cp $TARGET_DIR/$THEME_NAME $ZSH/themes/$THEME_NAME
-					echo "Copied '$THEME_NAME' to '$ZSH/themes/'"
-				else
-					echo "\e[1mFile '$THEME_NAME' already exists in '$ZSH/themes/'. Skipping copy.\e[0m"
-				fi
+			ZSH_THEME_FILE=$(find "$TARGET_DIR" -type f -name "*.zsh-theme" | head -n 1)
+			if [ -n "$ZSH_THEME_FILE" ]; then
+				mv "$ZSH_THEME_FILE" "$ZSH/themes/"
+				echo "Moved $(basename "$ZSH_THEME_FILE") to $ZSH/themes/"
 			else
-				echo "The file '$THEME_NAME' doesn't exist in '$TARGET_DIR'"
+				echo "No .zsh-theme file found in the repository."
 				exit 1
 			fi
+
+			rm -rf "$TARGET_DIR"
+			echo "Removed cloned directory '$TARGET_DIR'"
 			;;
 	esac
 done
